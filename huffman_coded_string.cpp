@@ -84,7 +84,7 @@ void freeTree(Node* root) {
 
 // Example usage
 int main() {
-    string text = "mississippi";
+    string text = "atcg___gcat    t";
 
     Node* root = nullptr;
     unordered_map<char, string> codeMap;
