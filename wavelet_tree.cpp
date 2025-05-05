@@ -54,9 +54,31 @@ char access(WaveletNode* root,int index)
     else return access(root->right,index);
 }
 
-int rank(WaveletNode* root,int index , char ch)
+int rankwavelet(WaveletNode* root,int index, string code)
 {
-    
+    for (char c: code)
+    {
+        int temp(0);
+        for(int i = 0;i<index;i++)
+        {
+            if(root->bitvector[i]== (c-'0')) temp++;
+        }
+        index = temp;
+        root = (c-'0')==0?root->left:root->right;
+    }
+    return index;
+}
+
+void GenerateCharacterCodes(WaveletNode* root, unordered_map<char,string> &codes,string S)
+{
+    if(!root->left && !root->right) 
+    {
+        codes[root->ch] = S; 
+        return;
+    }
+    else 
+        GenerateCharacterCodes(root->left, codes, S+'0');
+        GenerateCharacterCodes(root->right, codes, S+'1');
 }
 int main()
 {
@@ -68,5 +90,13 @@ int main()
         if(uset.find(T[i])==uset.end())uset.insert(T[i]);
     }
     WaveletNode* root = BuildWavelet(T,vector<char>(uset.begin(),uset.end()));
-    cout<<access(root, 5);
+    unordered_map<char, string> codes;
+    GenerateCharacterCodes(root,codes,"");
+    cout<<access(root, 5)<<endl;
+    char rankchar = 'i';
+    string rankcode = codes[rankchar];
+    cout<<T<<endl;
+    for_each(root->bitvector.begin(), root->bitvector.end(), [](int x) { std::cout << x << ' '; });
+    cout<<endl;
+    cout<<rankwavelet(root,6,rankcode);
 }
