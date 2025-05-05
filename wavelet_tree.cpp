@@ -95,8 +95,5 @@ int main()
     cout<<access(root, 5)<<endl;
     char rankchar = 'i';
     string rankcode = codes[rankchar];
-    cout<<T<<endl;
-    for_each(root->bitvector.begin(), root->bitvector.end(), [](int x) { std::cout << x << ' '; });
-    cout<<endl;
     cout<<rankwavelet(root,6,rankcode);
 }
