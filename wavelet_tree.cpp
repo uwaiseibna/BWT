@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <stack>
 using namespace std;
 
 
@@ -69,6 +70,37 @@ int rankwavelet(WaveletNode* root,int index, string code)
     return index;
 }
 
+int select(WaveletNode* root, int rank, string code)
+{
+    stack<vector<int>> rootvectors;
+    vector<int> current;
+    string rev= "";
+    for (char c: code)
+    {
+        rootvectors.push(root->bitvector);
+        root = (c-'0')==0?root->left:root->right;
+        rev = c+rev;
+    }
+    
+    for(char c: rev)
+    {   
+        int count= 0;
+        current=rootvectors.top();
+        rootvectors.pop();
+        for(int i =0 ;i<current.size();++i)
+        
+        {
+            if(current[i]==(c-'0'))count++;
+            if(count==rank+1) 
+            {
+                rank = i; 
+                break;
+            }
+        }
+    }
+    return rank;
+}
+
 void GenerateCharacterCodes(WaveletNode* root, unordered_map<char,string> &codes,string S)
 {
     if(!root->left && !root->right) 
@@ -93,7 +125,9 @@ int main()
     unordered_map<char, string> codes;
     GenerateCharacterCodes(root,codes,"");
     cout<<access(root, 5)<<endl;
-    char rankchar = 'i';
+    char rankchar = 's';
     string rankcode = codes[rankchar];
-    cout<<rankwavelet(root,6,rankcode);
+    cout<<rankwavelet(root,6,rankcode)<<endl;
+    cout<<select(root,3, rankcode);
+
 }
